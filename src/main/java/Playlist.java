@@ -5,50 +5,51 @@ import java.util.List;
 public class Playlist {
 
     String name;
-    static boolean isEmpty;
-    static List<Song> songs = new ArrayList<>();
-    static int totalDuration = 0;
+    private boolean isEmpty;
+    private List<Song> songs;
+    private int totalDuration;
 
     public Playlist(String name){
+        // add default values with another constructor that calls the full constructor
+        this(name, true, new ArrayList<>(), 0);
+    }
+
+    public Playlist(String name, boolean isEmpty, List<Song> songs, int totalDuration) {
         this.name = name;
-        this.isEmpty = true;
-        this.songs = new ArrayList<>();
+        this.isEmpty = isEmpty;
+        this.songs = songs;
+        this.totalDuration = totalDuration;
     }
 
-    public static boolean isEmpty(){
-        return isEmpty;
+    public boolean isEmpty(){
+        return this.isEmpty;
     }
 
-    public static void addSong(Song song){
-        songs.add(song);
-        isEmpty = false;
-        totalDuration += song.durationInSeconds;
+    public void addSong(Song song){
+        this.songs.add(song);
+        this.isEmpty = false;
+        this.totalDuration += song.durationInSeconds;
     }
 
-    public static String[] songNames(){
+    public String[] songNames(){
+        String[] names = new String[this.songs.size()];
+        // create a new array of strings with names
 
-        String[] names = new String[songs.size()];
-
-
-        for(int i = 0; i < songs.size(); i++){
-            Song song = songs.get(i);
-            System.out.println(song.title);
+        for(int i = 0; i < this.songs.size(); i++){
+            Song song = this.songs.get(i); // .get method from ArrayList
             names[i] = song.title;
         }
 
-        System.out.println(names.length);
-        System.out.println(songs.size());
-
-        return names;
+        return names; //test asks for new Song[0] in this case its equal to new String[0]
     }
 
-    public static int totalDuration(){
-        return totalDuration;
+    public int totalDuration(){
+        return this.totalDuration;
     }
 
-    public static void swap(Song song1, Song song2){
+    public void swap(Song song1, Song song2){
 
-        int len = songs.size();
+        int len = this.songs.size();
 
         int i = 0;
         int j = 0;
@@ -57,51 +58,27 @@ public class Playlist {
 
         while (i < len) {
 
-            if (songs.get(i) == song1) {
+            if (this.songs.get(i) == song1) {
                 first = i;
             }
             i++;
         }
-
+        // find indexes of elements we need to swap
         while (j < len) {
 
-            if (songs.get(j) == song2) {
+            if (this.songs.get(j) == song2) {
                 second = j;
             }
             j++;
 
         }
 
-        Collections.swap(songs, first, second);
-
-//        Song temp = songNames[first];
-//        songNames[first] = songNames[second];
-//        songNames[second] = temp;
-
-        songNames();
+        Collections.swap(this.songs, first, second);
+        // Collections method accepts an ArrayList and two indexes to swap
     }
 
-    public static void removeSong(Song song){
-//        List<Song> temp = new ArrayList<>(songs.size() -1);
-//
-//        for (int i = 0, k = 0; i < songs.size(); i++) {
-//
-//            if(songs.get(i).title == song.title){
-//                continue;
-//            }
-//            temp.set(k++, songs.get(i));
-//
-//        }
+    public void removeSong(Song song){
         songs.remove(song);
-
-        songNames();
-
-        for(int i = 0; i < songs.size(); i++){
-            System.out.println(songs.get(i));
-
-        }
-        System.out.println(songs.size());
-
     }
 
 
